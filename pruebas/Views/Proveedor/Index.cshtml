@@ -1,0 +1,40 @@
+﻿@model IEnumerable<pruebas.Models.proveedor>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table>
+    <tr>
+        <th>
+            Nombre
+        </th>
+        <th>
+            telefono
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (pruebas.Models.proveedor p in Model) {
+    <tr>
+        <td>
+            <label>@p.Nombre</label>
+        </td>
+        <td>
+            <label>@p.telefono</label>
+        </td>
+        <td>
+            <a href="/Details"></a>
+            @Html.ActionLink("Edit", "Edit", new { id=p.id }) |
+            @Html.ActionLink("Details", "Details", new { id=p.id }) |
+            @Html.ActionLink("Delete", "Delete", new { id=p.id })
+        </td>
+    </tr>
+}
+
+</table>

@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="pruebasModel" Alias="Self" p1:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:p1="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="pruebasEntities" p1:LazyLoadingEnabled="true">
+    <EntitySet Name="producto" EntityType="pruebasModel.producto" />
+    <EntitySet Name="proveedor" EntityType="pruebasModel.proveedor" />
+    <EntitySet Name="venta" EntityType="pruebasModel.venta" />
+    <EntitySet Name="venta_has_producto" EntityType="pruebasModel.venta_has_producto" />
+    <AssociationSet Name="fk_Producto_Proveedor" Association="pruebasModel.fk_Producto_Proveedor">
+      <End Role="proveedor" EntitySet="proveedor" />
+      <End Role="producto" EntitySet="producto" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Venta_has_Producto_Producto1" Association="pruebasModel.fk_Venta_has_Producto_Producto1">
+      <End Role="producto" EntitySet="producto" />
+      <End Role="venta_has_producto" EntitySet="venta_has_producto" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Venta_has_Producto_Venta1" Association="pruebasModel.fk_Venta_has_Producto_Venta1">
+      <End Role="venta" EntitySet="venta" />
+      <End Role="venta_has_producto" EntitySet="venta_has_producto" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="producto">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+    <Property Name="precios" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+    <Property Name="Proveedor_id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="proveedor" Relationship="pruebasModel.fk_Producto_Proveedor" FromRole="producto" ToRole="proveedor" />
+    <NavigationProperty Name="venta_has_producto" Relationship="pruebasModel.fk_Venta_has_Producto_Producto1" FromRole="producto" ToRole="venta_has_producto" />
+  </EntityType>
+  <EntityType Name="proveedor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+    <Property Name="telefono" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+    <NavigationProperty Name="producto" Relationship="pruebasModel.fk_Producto_Proveedor" FromRole="proveedor" ToRole="producto" />
+  </EntityType>
+  <EntityType Name="venta">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" p1:StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="String" MaxLength="45" Unicode="false" FixedLength="false" />
+    <Property Name="total" Type="Decimal" Precision="10" Scale="2" />
+    <NavigationProperty Name="venta_has_producto" Relationship="pruebasModel.fk_Venta_has_Producto_Venta1" FromRole="venta" ToRole="venta_has_producto" />
+  </EntityType>
+  <EntityType Name="venta_has_producto">
+    <Key>
+      <PropertyRef Name="Venta_id" />
+      <PropertyRef Name="Producto_id" />
+    </Key>
+    <Property Name="Venta_id" Type="Int32" Nullable="false" />
+    <Property Name="Producto_id" Type="Int32" Nullable="false" />
+    <Property Name="precioVenta" Type="Decimal" Precision="10" Scale="2" />
+    <NavigationProperty Name="producto" Relationship="pruebasModel.fk_Venta_has_Producto_Producto1" FromRole="venta_has_producto" ToRole="producto" />
+    <NavigationProperty Name="venta" Relationship="pruebasModel.fk_Venta_has_Producto_Venta1" FromRole="venta_has_producto" ToRole="venta" />
+  </EntityType>
+  <Association Name="fk_Producto_Proveedor">
+    <End Role="proveedor" Type="pruebasModel.proveedor" Multiplicity="1" />
+    <End Role="producto" Type="pruebasModel.producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="proveedor">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="Proveedor_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Venta_has_Producto_Producto1">
+    <End Role="producto" Type="pruebasModel.producto" Multiplicity="1" />
+    <End Role="venta_has_producto" Type="pruebasModel.venta_has_producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="producto">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="venta_has_producto">
+        <PropertyRef Name="Producto_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Venta_has_Producto_Venta1">
+    <End Role="venta" Type="pruebasModel.venta" Multiplicity="1" />
+    <End Role="venta_has_producto" Type="pruebasModel.venta_has_producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="venta">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="venta_has_producto">
+        <PropertyRef Name="Venta_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

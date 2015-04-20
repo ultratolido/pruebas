@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="pruebasModel.Store" Alias="Self" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="pruebasModelStoreContainer">
+    <EntitySet Name="producto" EntityType="pruebasModel.Store.producto" store:Type="Tables" Schema="pruebas" />
+    <EntitySet Name="proveedor" EntityType="pruebasModel.Store.proveedor" store:Type="Tables" Schema="pruebas" />
+    <EntitySet Name="venta" EntityType="pruebasModel.Store.venta" store:Type="Tables" Schema="pruebas" />
+    <EntitySet Name="venta_has_producto" EntityType="pruebasModel.Store.venta_has_producto" store:Type="Tables" Schema="pruebas" />
+    <AssociationSet Name="fk_Producto_Proveedor" Association="pruebasModel.Store.fk_Producto_Proveedor">
+      <End Role="proveedor" EntitySet="proveedor" />
+      <End Role="producto" EntitySet="producto" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Venta_has_Producto_Producto1" Association="pruebasModel.Store.fk_Venta_has_Producto_Producto1">
+      <End Role="producto" EntitySet="producto" />
+      <End Role="venta_has_producto" EntitySet="venta_has_producto" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Venta_has_Producto_Venta1" Association="pruebasModel.Store.fk_Venta_has_Producto_Venta1">
+      <End Role="venta" EntitySet="venta" />
+      <End Role="venta_has_producto" EntitySet="venta_has_producto" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="producto">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="varchar" MaxLength="45" />
+    <Property Name="precios" Type="varchar" MaxLength="45" />
+    <Property Name="Proveedor_id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="proveedor">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="Nombre" Type="varchar" MaxLength="45" />
+    <Property Name="telefono" Type="varchar" MaxLength="45" />
+  </EntityType>
+  <EntityType Name="venta">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="varchar" MaxLength="45" />
+    <Property Name="total" Type="decimal" Scale="2" />
+  </EntityType>
+  <EntityType Name="venta_has_producto">
+    <Key>
+      <PropertyRef Name="Venta_id" />
+      <PropertyRef Name="Producto_id" />
+    </Key>
+    <Property Name="Venta_id" Type="int" Nullable="false" />
+    <Property Name="Producto_id" Type="int" Nullable="false" />
+    <Property Name="precioVenta" Type="decimal" Scale="2" />
+  </EntityType>
+  <Association Name="fk_Producto_Proveedor">
+    <End Role="proveedor" Type="pruebasModel.Store.proveedor" Multiplicity="1" />
+    <End Role="producto" Type="pruebasModel.Store.producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="proveedor">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="Proveedor_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Venta_has_Producto_Producto1">
+    <End Role="producto" Type="pruebasModel.Store.producto" Multiplicity="1" />
+    <End Role="venta_has_producto" Type="pruebasModel.Store.venta_has_producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="producto">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="venta_has_producto">
+        <PropertyRef Name="Producto_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Venta_has_Producto_Venta1">
+    <End Role="venta" Type="pruebasModel.Store.venta" Multiplicity="1" />
+    <End Role="venta_has_producto" Type="pruebasModel.Store.venta_has_producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="venta">
+        <PropertyRef Name="id" />
+      </Principal>
+      <Dependent Role="venta_has_producto">
+        <PropertyRef Name="Venta_id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
